@@ -159,9 +159,11 @@ public class MigrationHelper {
 					int randDecimalAsciiVal = rand.nextInt(93) + 33;
 					password[x] = (char) randDecimalAsciiVal;
 				}
-				pass = new String(password);
 			}
-			us.createUser(user, pass);
+			// Uses char array
+			us.createUser(user, password);
+			// Clears password character array memory
+			password = null;
 			++ret;
 		}
 		return ret;
@@ -265,7 +267,6 @@ public class MigrationHelper {
 						int randDecimalAsciiVal = rand.nextInt(93) + 33;
 						password[x] = (char) randDecimalAsciiVal;
 					}
-					pass = new String(password);
 				}
 				if (autoAddRole) {
 					Role role = us.getRole(relationshipType);
@@ -273,7 +274,10 @@ public class MigrationHelper {
 						user.addRole(role);
 					}
 				}
-				us.createUser(user, pass);
+				// Uses char array
+				us.createUser(user, password);
+				// Clears password character array memory
+				password = null;
 			}
 			if (user == null) {
 				throw new IllegalArgumentException("Can't find user '" + userLastName + ", " + userFirstName + "'");
