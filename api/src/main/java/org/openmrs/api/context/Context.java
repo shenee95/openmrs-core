@@ -315,7 +315,11 @@ public class Context {
 	 * @should change locale when become another user
 	 */
 	public static void becomeUser(String systemId) throws ContextAuthenticationException {
-		log.info("systemId: {}", systemId);
+		if(log.isInfoEnabled()){
+			String regex = "info|debug|severe|error|INFO|DEBUG|SEVERE|ERROR";
+			systemID = systemId.replaceAll(regex,"");
+			log.info("systemId: {}", systemId);
+		}
 
 		User user = getUserContext().becomeUser(systemId);
 
