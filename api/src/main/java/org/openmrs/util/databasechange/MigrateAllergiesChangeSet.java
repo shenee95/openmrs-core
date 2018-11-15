@@ -161,16 +161,13 @@ public class MigrateAllergiesChangeSet implements CustomTaskChange {
 		Query query = sessionFactory.getCurrentSession().createSQLQuery(select);
 		query.setString("globalPropertyName", globalPropertyName);
 		ResultSet rs = query.executeQuery();
-		//PreparedStatement stmt = connection.prepareStatement("SELECT property_value FROM global_property WHERE property = ?");
-		//stmt.setString(1, globalPropertyName);
-		//ResultSet rs = stmt.executeQuery();
 		if (rs.next()) {
 			String uuid = rs.getString("property_value");
 			
-			boolean alphanumericCheck = StringUtils.isAlphanumeric(uuid);
-			if(alphanumericCheck == False){
+			Pattern p = Pattern.compile(“[a-zA-Z0-9\-]”);
+			if(!p.matcher(uuid).find()){
 				throw new Error("Invalid user ID.");
-			}
+			}			
 			
 			rs = stmt.executeQuery("SELECT concept_id FROM concept WHERE uuid = '" + uuid + "'");
 			if (rs.next()) {
