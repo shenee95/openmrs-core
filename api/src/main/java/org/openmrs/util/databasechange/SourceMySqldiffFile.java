@@ -204,6 +204,11 @@ public class SourceMySqldiffFile implements CustomTaskChange {
 			wd = null;
 		}
 		
+		Pattern p = Pattern.compile(“[a-z0-9\?\.\=]”);
+		if(!p.matcher(wd).find()){
+			throw new Error("File contains unsupported characters.");
+		}
+		
 		Process p = (wd != null) ? Runtime.getRuntime().exec(cmdWithArguments, null, wd) : Runtime.getRuntime().exec(
 		    cmdWithArguments);
 		
